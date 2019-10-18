@@ -1,0 +1,15 @@
+Lorrayya Williams
+Created on 18 October 19 for CS 262
+
+Original Schema
+Player(ID, emailAddress, name)
+PlayerGame(gameID, playerID, score)
+Game (ID, time)
+
+New  Schema
+Player(ID, emailAddress, name) 
+Game(ID, time, completed) [modified]
+PlayerGame(gameID, playerID,score,  location of piece, cash, location) [modified]
+PropertyGame(propertyID, playerID, gameID, houses, hotels, mortgage)
+Properties(ID, name, houses, hotels, price, rent, rent1house, rent2house, rent3house, rent4house, renthotel)
+
