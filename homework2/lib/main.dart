@@ -1,17 +1,19 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
+//Lorrayya Williams
 
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Homework 2',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -48,19 +50,39 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String data = "";
+  String nameKey = "_key_name_";
+  TextEditingController controller = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState(){
+    super.initState();
+    const MethodChannel('plugins.flutter.io/shared_preferences')
+        .setMockMethodCallHandler(
+          (MethodCall methodcall) async {
+        if (methodcall.method == 'getAll') {
+          return {"flutter." + nameKey: "[ No Name Saved ]"};
+        }
+        return null;
+      },
+    );
+    setData();
   }
-
+  Future<bool> saveData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return await preferences.setString(nameKey, controller.text);
+  }
+  Future<String> loadData() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString(nameKey);
+    }
+    setData(){
+      loadData().then((value){
+        setState(() {
+          data = value;
+        });
+      });
+  }
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -75,7 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(30.0),
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
@@ -95,21 +119,30 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            TextField(
+             controller: controller,
+                decoration: InputDecoration.collapsed(hintText: "Enter NAme"),
+            ),
+            OutlineButton(
+              child: Text("Save NAME"),
+              onPressed: (){
+                saveData();
+              },
+            ),
+            OutlineButton(
+              child: Text("Load NAME"),
+              onPressed: (){
+                setData();
+              },
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+              data,
+              style: TextStyle(fontSize:20)
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
