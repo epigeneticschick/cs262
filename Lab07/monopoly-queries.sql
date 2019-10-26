@@ -4,11 +4,10 @@ SELECT *
   ;
 
 -- Get the player records.
-SELECT * 
+SELECT *
   FROM Player
   ;
 
--- Get all the users with Calvin email addresses.
 SELECT *
   FROM Player
  WHERE emailAddress LIKE '%calvin%'
@@ -25,3 +24,5 @@ ORDER BY score DESC
 SELECT *
   FROM Player, PlayerGame, Game
   ;
+
+  
