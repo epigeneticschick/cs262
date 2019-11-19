@@ -1,0 +1,6 @@
+Lab 11 by Lorrayya Williams written for CS 262 at Calvin University
+
+Here I am to explain why the reformmatter lacks appliocation to dart according to Dr. Vander Linden.
+--- The formatting for the code isn't what is necessary for dart due to the fact that it collapses the parentheses. The parantheses make it where we can discern the seperation between nested widgets etc. Additionally the analysis is nonfunctional for dart.  
+
+
